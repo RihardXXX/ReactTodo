@@ -1,2 +1,24 @@
 .listItemTodo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.listItemTodo .text {
+  cursor: pointer;
+}
+
+.listItemTodo button {
+  margin-left: 20px;
+  width: 50px;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.important {
+  color: blue;
+  font-weight: bold;
 }

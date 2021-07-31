@@ -7,19 +7,8 @@ import './ListTodo.css';
 const ListTodo = ({ tasks }) => {
   const tasksRender = tasks.map(({ id, ...textImportant }) => {
     return (
-      <li
-        key={id}
-        className="list-group-item d-flex d-flex justify-content-between"
-      >
+      <li key={id} className="list-group-item">
         <ListItemTodo {...textImportant} />
-        <span>
-          <button type="button" className="btn btn-outline-success">
-            <i className="fas fa-exclamation"></i>
-          </button>
-          <button type="button" className="btn btn-outline-danger">
-            <i className="far fa-trash-alt"></i>
-          </button>
-        </span>
       </li>
     );
   });
