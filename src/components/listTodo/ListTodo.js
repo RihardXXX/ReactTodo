@@ -4,11 +4,11 @@ import ListItemTodo from '../listItemTodo';
 
 import './ListTodo.css';
 
-const ListTodo = ({ tasks }) => {
+const ListTodo = ({ tasks, onDeleteTask }) => {
   const tasksRender = tasks.map(({ id, ...textImportant }) => {
     return (
       <li key={id} className="list-group-item">
-        <ListItemTodo {...textImportant} />
+        <ListItemTodo {...textImportant} onDelete={() => onDeleteTask(id)} />
       </li>
     );
   });

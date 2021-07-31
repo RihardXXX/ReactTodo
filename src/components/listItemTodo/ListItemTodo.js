@@ -11,19 +11,15 @@ export default class ListItemTodo extends Component {
   };
 
   onDone = () => {
-    this.setState({
-      done: true,
-    });
+    this.setState(({ done }) => ({ done: !done }));
   };
 
   onImportant = () => {
-    this.setState({
-      important: true,
-    });
+    this.setState(({ important }) => ({ important: !important }));
   };
 
   render() {
-    const { text } = this.props;
+    const { text, onDelete } = this.props;
     const { done, mainClass, important } = this.state;
 
     let css = classNames(mainClass, { done }, { important });
@@ -41,7 +37,11 @@ export default class ListItemTodo extends Component {
           >
             <i className="fas fa-exclamation"></i>
           </button>
-          <button type="button" className="btn btn-outline-danger">
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={onDelete}
+          >
             <i className="far fa-trash-alt"></i>
           </button>
         </span>
