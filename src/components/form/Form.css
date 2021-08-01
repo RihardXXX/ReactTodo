@@ -1,0 +1,18 @@
+.form {
+  padding: 10px;
+}
+
+.form label {
+  font-size: 28px;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.form input {
+  width: 50%;
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+}

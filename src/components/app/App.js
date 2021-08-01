@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import Header from '../header';
 import Search from '../search';
 import ListTodo from '../listTodo';
+import Form from '../form';
 
 import './App.css';
 
 export default class App extends Component {
+  createTask = (text) => ({
+    id: uuidv4(),
+    text: text,
+    done: false,
+    important: false,
+  });
+
   state = {
     tasks: [
-      { id: 0, text: 'Learn React' },
-      { id: 1, text: 'Learn Redux' },
-      { id: 2, text: 'Learn JSX' },
-      { id: 3, text: 'Learn aplication' },
+      this.createTask('Learn React'),
+      this.createTask('Learn Redux'),
+      this.createTask('Learn JSX'),
+      this.createTask('Learn aplication'),
     ],
   };
 
@@ -20,17 +29,53 @@ export default class App extends Component {
     this.setState(({ tasks }) => ({ tasks: tasks.filter((t) => t.id !== id) }));
   };
 
+  onAddTask = (text) =>
+    this.setState(({ tasks }) => ({
+      tasks: [...this.state.tasks, this.createTask(text)],
+    }));
+
+  changeProperty = (arr, property, id) => {
+    return arr.map((task) => {
+      if (task.id === id) {
+        return { ...task, [property]: !task[property] };
+      }
+      return task;
+    });
+  };
+
+  onDone = (id) =>
+    this.setState(({ tasks }) => ({
+      tasks: this.changeProperty([...tasks], 'done', id),
+    }));
+
+  onImportant = (id) =>
+    this.setState(({ tasks }) => ({
+      tasks: this.changeProperty([...tasks], 'important', id),
+    }));
+
   render() {
     const {
       onDeleteTask,
+      onAddTask,
+      onDone,
+      onImportant,
       state: { tasks },
     } = this;
 
+    const doneCount = tasks.filter((tasks) => tasks.done).length;
+    const todoCount = tasks.length - doneCount;
+
     return (
       <div className="container">
-        <Header />
+        <Header todoCount={todoCount} doneCount={doneCount} />
         <Search />
-        <ListTodo tasks={tasks} onDeleteTask={onDeleteTask} />
+        <ListTodo
+          tasks={tasks}
+          onDeleteTask={onDeleteTask}
+          onDone={onDone}
+          onImportant={onImportant}
+        />
+        <Form onAddTask={onAddTask} />
       </div>
     );
   }
