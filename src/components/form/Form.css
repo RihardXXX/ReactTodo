@@ -15,4 +15,10 @@
 .form-wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.form-wrapper span {
+  color: tomato;
+  font-weight: 500;
+  font-size: 18px;
 }

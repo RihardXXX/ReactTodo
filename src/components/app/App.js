@@ -14,6 +14,7 @@ export default class App extends Component {
     text: text,
     done: false,
     important: false,
+    query: '',
   });
 
   state = {
@@ -25,12 +26,16 @@ export default class App extends Component {
     ],
   };
 
+  setQuery = (queryText) => {
+    this.setState(({ query }) => ({ query: queryText }));
+  };
+
   onDeleteTask = (id) => {
     this.setState(({ tasks }) => ({ tasks: tasks.filter((t) => t.id !== id) }));
   };
 
   onAddTask = (text) =>
-    this.setState(({ tasks }) => ({
+    this.setState(({ tasks, result }) => ({
       tasks: [...this.state.tasks, this.createTask(text)],
     }));
 
@@ -53,24 +58,43 @@ export default class App extends Component {
       tasks: this.changeProperty([...tasks], 'important', id),
     }));
 
+  searchTask = (query, arr) => {
+    if (!query) {
+      return arr;
+    } else {
+      return arr
+        .map((task) => ({
+          ...task,
+          text: task.text.toLowerCase(),
+        }))
+        .filter((task) => {
+          return task.text.indexOf(query) >= 0;
+        });
+    }
+  };
+
   render() {
     const {
       onDeleteTask,
       onAddTask,
       onDone,
       onImportant,
-      state: { tasks },
+      searchTask,
+      setQuery,
+      state: { tasks, query },
     } = this;
 
     const doneCount = tasks.filter((tasks) => tasks.done).length;
     const todoCount = tasks.length - doneCount;
 
+    const visibleData = searchTask(query, tasks);
+
     return (
       <div className="container">
         <Header todoCount={todoCount} doneCount={doneCount} />
-        <Search />
+        <Search setQuery={setQuery} />
         <ListTodo
-          tasks={tasks}
+          tasks={visibleData}
           onDeleteTask={onDeleteTask}
           onDone={onDone}
           onImportant={onImportant}
