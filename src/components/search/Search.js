@@ -2,19 +2,41 @@ import React, { Component } from 'react';
 
 import './Search.css';
 
-export default class Search extends Component {
-  state = {
-    all: false,
-    active: false,
-    done: false,
-  };
+var classNames = require('classnames');
 
+export default class Search extends Component {
   onQuerySearch = (e) => {
     const { setQuery } = this.props;
     setQuery(e.target.value.toLowerCase());
   };
 
+  onFilter = (params) => {
+    const { setArg } = this.props;
+    setArg(params);
+  };
+
+  buttons = [
+    { css: 'btn btn-outline-primary', name: 'all' },
+    { css: 'btn btn-outline-primary', name: 'active' },
+    { css: 'btn btn-outline-primary', name: 'done' },
+  ];
+
   render() {
+    const { arg } = this.props;
+    const renderButtons = this.buttons.map((btn) => {
+      let clazz = classNames(btn.css, { active: arg === btn.name });
+      return (
+        <button
+          type="button"
+          className={clazz}
+          onClick={() => this.onFilter(btn.name)}
+          key={btn.name}
+        >
+          {btn.name}
+        </button>
+      );
+    });
+
     return (
       <div className="search">
         <input
@@ -22,15 +44,7 @@ export default class Search extends Component {
           placeholder="search task"
           onChange={this.onQuerySearch}
         />
-        <button type="button" className="btn btn-outline-primary active">
-          all
-        </button>
-        <button type="button" className="btn btn-outline-secondary">
-          active
-        </button>
-        <button type="button" className="btn btn-outline-success">
-          done
-        </button>
+        {renderButtons}
       </div>
     );
   }
